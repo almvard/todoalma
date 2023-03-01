@@ -1,5 +1,5 @@
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import { IListItem } from "../interface/interfaces";
+import { IListItem } from "../interfaces";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import "./List.css";
 

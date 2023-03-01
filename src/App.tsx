@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { List } from "./components/List";
-import { IListItem } from "./interface/interfaces";
+import { IListItem } from "./interfaces";
 import Pagination from "@mui/material/Pagination";
+import { Sorting } from "./components/Sorting";
 
 function App() {
   const [data, setData] = useState<IListItem[]>([]);
@@ -11,12 +12,22 @@ function App() {
   const [pages, setPages] = useState(1);
 
   useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/todos`)
-      .then((response) => response.json())
-      .then((actualData) => setData(actualData))
-      .catch((err) => {
-        setException(err);
-      });
+    async function getData() {
+      try {
+        const response = await fetch(
+          `https://jsonplaceholder.typicode.com/todos`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setData(data);
+        } else {
+          throw new Error("Nånting gick fel");
+        }
+      } catch (e: any) {
+        setException(e);
+      }
+    }
+    getData();
   }, []);
 
   useEffect(() => {
@@ -34,17 +45,25 @@ function App() {
     return calcStartIndex() + 10;
   };
 
+  //<Sorting data={data} setData={setData} />
+
   return (
     <div className="App-header">
-      <p>Min fina lista</p>
-      <Pagination count={pages} page={page} onChange={handleChange} />
-      {data.length > 0 && (
-        <List
-          data={data}
-          setData={setData}
-          startIndex={calcStartIndex()}
-          stopIndex={calcStopIndex()}
-        />
+      {exception ? (
+        <>exception lol</>
+      ) : (
+        <>
+          <p>Min fina lista</p>
+          <Pagination count={pages} page={page} onChange={handleChange} />
+          {data.length > 0 && (
+            <List
+              data={data}
+              setData={setData}
+              startIndex={calcStartIndex()}
+              stopIndex={calcStopIndex()}
+            />
+          )}
+        </>
       )}
     </div>
   );
