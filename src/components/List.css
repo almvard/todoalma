@@ -1,0 +1,18 @@
+.List {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    width: 500px;
+}
+
+.Trashicon {
+    padding: 9px;
+    border-radius: 50%;
+}
+
+.Trashicon:hover {
+    background-color: rgba(25, 118, 210, 0.04);
+    cursor: pointer;
+}
+  
+
